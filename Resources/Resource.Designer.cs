@@ -81,6 +81,9 @@ namespace BT_X
 			// aapt resource value: 0x7f050009
 			public const int NotConnected = 2131034121;
 			
+			// aapt resource value: 0x7f050010
+			public const int TextDisplay = 2131034128;
+			
 			// aapt resource value: 0x7f050001
 			public const int linearLayout1 = 2131034113;
 			

@@ -40,12 +40,28 @@ namespace BT_X
             RadioButton Connected = FindViewById<RadioButton>(Resource.Id.Connected);
             Button LockOpen = FindViewById<Button>(Resource.Id.LockOpen);
             Button LockClose = FindViewById<Button>(Resource.Id.LockClose);
+            //TextView TextDisplay = FindViewById<Button>(Resource.Id.TextDisplay);
 
             NotConnected.Click += doDisconnect;
             Connected.Click += doConnect;
+            LockOpen.Click += doOpen;
+            LockClose.Click += doClose;
 
             CheckBt();
         }
+
+        void doOpen(object sender, EventArgs e)
+        {
+            dataToSend = new Java.Lang.String("open\n");
+            writeData(dataToSend);
+        }
+
+        void doClose(object sender, EventArgs e)
+        {
+            dataToSend = new Java.Lang.String("close\n");
+            writeData(dataToSend);
+        }
+
 
         private void CheckBt()
         {
@@ -78,7 +94,9 @@ namespace BT_X
         */
         void doConnect(object sender, EventArgs e)
         {
+            if (btSocket == null || !btSocket.IsConnected) {
                 Connect();
+            }
         }
 
         void doDisconnect(object sender, EventArgs e)
@@ -98,8 +116,7 @@ namespace BT_X
         {
 
             var pairedDevices = mBluetoothAdapter.BondedDevices;
-            BluetoothDevice device;// = mBluetoothAdapter.GetRemoteDevice(address);
-            //System.Console.WriteLine("Connexion en cours" + device);
+            BluetoothDevice device;
 
             if (pairedDevices.Count > 0) {
                 // There are paired devices. Get the name and address of each paired device.
@@ -112,7 +129,7 @@ namespace BT_X
                         try {
                             btSocket = device.CreateRfcommSocketToServiceRecord(MY_UUID);
                             btSocket.Connect();
-                            System.Console.WriteLine("Connexion etablie");
+                            System.Console.WriteLine("Connected to HC-05");
                         }
                         catch (System.Exception e) {
                             Console.WriteLine(e.Message);
@@ -120,14 +137,12 @@ namespace BT_X
                                 btSocket.Close();
                             }
                             catch (System.Exception) {
-                                System.Console.WriteLine("Socket error create");
+                                System.Console.WriteLine("Socket error on close");
                             }
                             System.Console.WriteLine("Socket failed to create");
                             return;
                         }
-                        beginListenForData();
-                        dataToSend = new Java.Lang.String("close\n");
-                        writeData(dataToSend);
+                        //beginListenForData();
                     }
                 }
             }
@@ -152,7 +167,8 @@ namespace BT_X
                         if (bytes > 0) { 
                             RunOnUiThread(() => {
                                 string valor = System.Text.Encoding.ASCII.GetString(buffer);
-                                Result.Text = Result.Text + "\n" + valor;
+                               // Result.Text = Result.Text + "\n" + valor;
+                               TextDisplay.
                             });
                         }
                     }

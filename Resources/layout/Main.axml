@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout1"
-        android:layout_marginBottom="107.0dp">
+        android:layout_marginBottom="20.0dp">
         <TextView
             android:text="BT"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -19,7 +19,8 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/radioGroup4">
+            android:id="@+id/radioGroup4"
+            android:layout_marginLeft="20dp">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +38,9 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayout2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp">
         <TextView
             android:text="Connect"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -47,7 +50,8 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/radioGroup5">
+            android:id="@+id/radioGroup5"
+            android:layout_marginLeft="20dp">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +69,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout3">
+        android:id="@+id/linearLayout3"
+        android:layout_marginBottom="20dp">
         <TextView
             android:text="Lock"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -76,17 +81,27 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/linearLayout4">
+            android:id="@+id/linearLayout4"
+            android:layout_marginLeft="20dp">
             <Button
                 android:text="Open"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/LockOpen" />
+                android:id="@+id/LockOpen"
+                android:hapticFeedbackEnabled="true" />
             <Button
                 android:text="Close"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/LockClose" />
+                android:id="@+id/LockClose"
+                android:hapticFeedbackEnabled="true" />
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:text="from lock"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TextDisplay"
+        android:gravity="center_horizontal" />
 </LinearLayout>
