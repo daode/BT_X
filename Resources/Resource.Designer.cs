@@ -67,22 +67,28 @@ namespace BT_X
 			public const int BTOn = 2131034117;
 			
 			// aapt resource value: 0x7f05000a
-			public const int Connected = 2131034122;
+			public const int Connect = 2131034122;
 			
 			// aapt resource value: 0x7f05000c
 			public const int Lock = 2131034124;
 			
+			// aapt resource value: 0x7f050011
+			public const int LockClose = 2131034129;
+			
 			// aapt resource value: 0x7f05000f
-			public const int LockClose = 2131034127;
+			public const int LockID = 2131034127;
+			
+			// aapt resource value: 0x7f050010
+			public const int LockOpen = 2131034128;
 			
 			// aapt resource value: 0x7f05000e
-			public const int LockOpen = 2131034126;
+			public const int LockState = 2131034126;
 			
 			// aapt resource value: 0x7f050009
 			public const int NotConnected = 2131034121;
 			
-			// aapt resource value: 0x7f050010
-			public const int TextDisplay = 2131034128;
+			// aapt resource value: 0x7f050012
+			public const int TextDisplay = 2131034130;
 			
 			// aapt resource value: 0x7f050001
 			public const int linearLayout1 = 2131034113;

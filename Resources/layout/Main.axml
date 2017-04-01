@@ -40,7 +40,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:layoutMode="opticalBounds">
         <TextView
             android:text="Connect"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -51,7 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/radioGroup5"
-            android:layout_marginLeft="20dp">
+            android:layout_marginLeft="130dp"
+            android:layout_gravity="right">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,8 +63,8 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Connected"
-                android:id="@+id/Connected" />
+                android:text="Connect"
+                android:id="@+id/Connect" />
         </RadioGroup>
     </LinearLayout>
     <LinearLayout
@@ -84,6 +86,16 @@
             android:id="@+id/linearLayout4"
             android:layout_marginLeft="20dp">
             <Button
+                android:text="Get State"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/LockState" />
+            <Button
+                android:text="Get Lock ID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/LockID" />
+            <Button
                 android:text="Open"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,12 +110,13 @@
         </LinearLayout>
     </LinearLayout>
     <TextView
-        android:text="from lock"
+        android:text="here display messages from lock"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TextDisplay"
         android:gravity="center_horizontal"
         android:minLines="3"
-        android:isScrollContainer="true" />
+        android:isScrollContainer="true"
+        android:enabled="false" />
 </LinearLayout>

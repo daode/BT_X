@@ -37,17 +37,33 @@ namespace BT_X
             RadioButton BTOff = FindViewById<RadioButton>(Resource.Id.BTOff);
             RadioButton BTOn = FindViewById<RadioButton>(Resource.Id.BTOn);
             RadioButton NotConnected = FindViewById<RadioButton>(Resource.Id.NotConnected);
-            RadioButton Connected = FindViewById<RadioButton>(Resource.Id.Connected);
+            RadioButton Connect = FindViewById<RadioButton>(Resource.Id.Connect);
+            Button LockState = FindViewById<Button>(Resource.Id.LockState);
+            Button LockID = FindViewById<Button>(Resource.Id.LockID);
             Button LockOpen = FindViewById<Button>(Resource.Id.LockOpen);
             Button LockClose = FindViewById<Button>(Resource.Id.LockClose);
             TextDisplay = FindViewById<TextView>(Resource.Id.TextDisplay);
 
             NotConnected.Click += doDisconnect;
-            Connected.Click += doConnect;
+            Connect.Click += doConnect;
             LockOpen.Click += doOpen;
             LockClose.Click += doClose;
+            LockState.Click += doLockState;
+            LockID.Click += doLockID;
 
             CheckBt();
+        }
+
+        void doLockState(object sender, EventArgs e)
+        {
+            dataToSend = new Java.Lang.String("state\n");
+            writeData(dataToSend);
+        }
+
+        void doLockID(object sender, EventArgs e)
+        {
+            dataToSend = new Java.Lang.String("ID\n");
+            writeData(dataToSend);
         }
 
         void doOpen(object sender, EventArgs e)
@@ -95,7 +111,9 @@ namespace BT_X
         void doConnect(object sender, EventArgs e)
         {
             if (btSocket == null || !btSocket.IsConnected) {
-                Connect();
+                if (Connect()) {
+                    TextDisplay.Enabled = true;
+                }
             }
         }
 
@@ -112,7 +130,7 @@ namespace BT_X
         }
 
 
-        public void Connect()
+        public bool Connect()
         {
 
             var pairedDevices = mBluetoothAdapter.BondedDevices;
@@ -139,14 +157,15 @@ namespace BT_X
                                 System.Console.WriteLine("Socket error on close");
                             }
                             System.Console.WriteLine("Socket failed to create");
-                            return;
+                            return false;
                         }
                         beginListenForData();
+                        return true;
                     }
                 }
             }
-
-
+            TextDisplay.Text = "No Lock Found in bluetooth environment (HC-05)";
+            return false;
         }
 
         public void beginListenForData()
@@ -161,14 +180,17 @@ namespace BT_X
             Task.Factory.StartNew(() => {
                 byte[] buffer = new byte[1024];
                 byte[] bufferCumulate = new byte[1024];
+                int[] len = new int[10];
+                int lenIndex = 0;   
                 int cumul = 0;
                 int bytes;
                 bool eol = false;
                 while (true) { 
                     try { 
                         bytes = inStream.Read(buffer, 0, buffer.Length);
-                        foreach (byte b in buffer) {
-                            if (b == '\n') {
+                        len[lenIndex++] = bytes;
+                        for (int i=0; i<bytes;i++) {
+                            if (buffer[i] == '\n') {
                                 eol = true;
                             }
                         }
@@ -176,10 +198,12 @@ namespace BT_X
                                         bufferCumulate, cumul,
                                             bytes);
                         cumul += bytes;
+                        bufferCumulate[cumul] = 0;
                         if (eol) {
-                            string valor = System.Text.Encoding.ASCII.GetString(buffer);
+                            string valor = System.Text.Encoding.ASCII.GetString(bufferCumulate);
                             eol = false;
                             cumul = 0;
+                            lenIndex = 0;
                             RunOnUiThread(() => {
                                 // Result.Text = Result.Text + "\n" + valor;
                                 TextDisplay.Text = valor;
