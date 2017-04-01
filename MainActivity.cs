@@ -22,9 +22,9 @@ namespace BT_X
         private BluetoothAdapter mBluetoothAdapter = null;
         private BluetoothSocket btSocket = null;
         private Stream outStream = null;
-        private static string address = "00:13:01:07:01:59";
         private static UUID MY_UUID = UUID.FromString("00001101-0000-1000-8000-00805F9B34FB");
         private Stream inStream = null;
+        private TextView TextDisplay = null;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -40,7 +40,7 @@ namespace BT_X
             RadioButton Connected = FindViewById<RadioButton>(Resource.Id.Connected);
             Button LockOpen = FindViewById<Button>(Resource.Id.LockOpen);
             Button LockClose = FindViewById<Button>(Resource.Id.LockClose);
-            //TextView TextDisplay = FindViewById<Button>(Resource.Id.TextDisplay);
+            TextDisplay = FindViewById<TextView>(Resource.Id.TextDisplay);
 
             NotConnected.Click += doDisconnect;
             Connected.Click += doConnect;
@@ -101,7 +101,7 @@ namespace BT_X
 
         void doDisconnect(object sender, EventArgs e)
         {
-            if (btSocket.IsConnected) {
+            if (btSocket != null && btSocket.IsConnected) {
                 try {
                     btSocket.Close();
                 }
@@ -120,7 +120,6 @@ namespace BT_X
 
             if (pairedDevices.Count > 0) {
                 // There are paired devices. Get the name and address of each paired device.
-                int i = 0;
                 foreach (BluetoothDevice deviceBT in pairedDevices) {
                     String deviceName = deviceBT.Name;
                     if (deviceName == "HC-05") {
@@ -142,7 +141,7 @@ namespace BT_X
                             System.Console.WriteLine("Socket failed to create");
                             return;
                         }
-                        //beginListenForData();
+                        beginListenForData();
                     }
                 }
             }
@@ -158,23 +157,38 @@ namespace BT_X
             catch (System.IO.IOException ex) { 
                 Console.WriteLine(ex.Message);
             }
+            TextDisplay.Text = "Lock: init communication";
             Task.Factory.StartNew(() => {
                 byte[] buffer = new byte[1024];
+                byte[] bufferCumulate = new byte[1024];
+                int cumul = 0;
                 int bytes;
+                bool eol = false;
                 while (true) { 
                     try { 
                         bytes = inStream.Read(buffer, 0, buffer.Length);
-                        if (bytes > 0) { 
+                        foreach (byte b in buffer) {
+                            if (b == '\n') {
+                                eol = true;
+                            }
+                        }
+                        Buffer.BlockCopy(buffer, 0 ,
+                                        bufferCumulate, cumul,
+                                            bytes);
+                        cumul += bytes;
+                        if (eol) {
+                            string valor = System.Text.Encoding.ASCII.GetString(buffer);
+                            eol = false;
+                            cumul = 0;
                             RunOnUiThread(() => {
-                                string valor = System.Text.Encoding.ASCII.GetString(buffer);
-                               // Result.Text = Result.Text + "\n" + valor;
-                               TextDisplay.
+                                // Result.Text = Result.Text + "\n" + valor;
+                                TextDisplay.Text = valor;
                             });
                         }
                     }
                     catch (Java.IO.IOException) { 
                         RunOnUiThread(() => {
-                            Result.Text = string.Empty;
+                            TextDisplay.Text = "Lock: end of communication";
                         });
                         break;
                     }

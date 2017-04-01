@@ -103,5 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TextDisplay"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:minLines="3"
+        android:isScrollContainer="true" />
 </LinearLayout>
